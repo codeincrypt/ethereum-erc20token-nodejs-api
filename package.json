@@ -1,0 +1,29 @@
+{
+  "name": "ethereum-erc20-api",
+  "version": "2.0.0",
+  "description": "ERC20 token api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeincrypt/ethereum-erc20-api.git"
+  },
+  "keywords": [
+    "ETH",
+    "ERC20",
+    "USDT",
+    "ERC20TOKEN"
+  ],
+  "author": "kartik swarnkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeincrypt/ethereum-erc20-api/issues"
+  },
+  "homepage": "https://github.com/codeincrypt/ethereum-erc20-api#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "web3": "^4.0.3"
+  }
+}
