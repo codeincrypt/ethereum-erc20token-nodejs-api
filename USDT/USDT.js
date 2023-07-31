@@ -14,6 +14,15 @@ app.listen(PORT, () => {
 
 const CONTRACT_ADDRESS = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 
+app.get("/create", async (req, res) => {
+    try {
+        const response = await web3.eth.accounts.create()
+        res.json(response)
+    } catch (error) {
+        console.log("Error in creating new address", error)
+    }
+})
+
 app.get("/balance/:address", asyncHandler(async (req, res, next) => {
 	let address = req.params.address;
 	try {
@@ -26,7 +35,7 @@ app.get("/balance/:address", asyncHandler(async (req, res, next) => {
 	}
 }));
 
-app.get('/transfer', async (req, res) => {
+app.get("/transfer", async (req, res) => {
 	let { privKey, amount, receiverAddress} = req.body
 	try {
 		const CONTRACT = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
