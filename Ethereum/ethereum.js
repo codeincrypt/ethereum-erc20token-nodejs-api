@@ -13,12 +13,24 @@ app.listen(PORT, () => {
 app.get("/create", async (req, res) => {
 	try {
 		const response = await web3.eth.accounts.create()
-		var pubkey = response.address
-		var privkey = response.privateKey
+		let pubkey = response.address
+		let privkey = response.privateKey
 		console.log('Ethereum address :: ', pubkey)
 		console.log('Ethereum private key (password) :: ', privkey)
 		res.json(response)
 	} catch (error) {
 		console.log("Error in creating new address", error)
 	}
+})
+
+app.post("/balance/:address", async (req, res) => {
+  let address = req.params.address
+  try {
+    let balance = await web3.eth.getBalance(address);
+    let ethbalance = web3.utils.fromWei(balance, 'ether');
+    console.log('getBalance', ethbalance);
+    res.json(ethbalance);
+  } catch (error) {
+    console.log('Error in fetching balance', error);
+  }
 })
