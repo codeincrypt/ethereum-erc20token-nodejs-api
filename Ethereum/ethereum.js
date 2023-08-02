@@ -23,14 +23,24 @@ app.get("/create", async (req, res) => {
 	}
 })
 
-app.post("/balance/:address", async (req, res) => {
+app.get("/balance/:address", async (req, res) => {
   let address = req.params.address
   try {
     let balance = await web3.eth.getBalance(address);
-    let ethbalance = web3.utils.fromWei(balance, 'ether');
-    console.log('getBalance', ethbalance);
-    res.json(ethbalance);
+    let result = web3.utils.fromWei(balance, 'ether');
+    console.log('balance', result);
+    res.json(result);
   } catch (error) {
     console.log('Error in fetching balance', error);
+  }
+})
+
+app.get("/transaction/:txnid", async (req, res) => {
+  let txnid = req.params.txnid
+  try {
+    var result = await web3.eth.getTransaction(txnid)
+    res.json(result);
+  } catch (error) {
+    console.log('Error in getting Transaction Details', error);
   }
 })
