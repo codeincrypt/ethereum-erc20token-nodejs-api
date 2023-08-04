@@ -44,3 +44,12 @@ app.get("/transaction/:txnid", async (req, res) => {
     console.log('Error in getting Transaction Details', error);
   }
 })
+
+app.get("/latestblock", async (req, res) => {
+	try {
+		var response = await web3.eth.getBlock("latest")
+		res.send(response);
+	} catch (error) {
+		console.log('Error in getting LatestBlock', error);
+	}
+})
