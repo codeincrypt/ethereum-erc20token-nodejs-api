@@ -54,7 +54,7 @@ app.get("/latestblock", async (req, res) => {
 	}
 })
 
-app.get("/latestblock", async (req, res) => {
+app.get("/transfer", async (req, res) => {
 	let {receiverAddress, password, amount} = req.bodys
 	const account = await web3.eth.accounts.privateKeyToAccount(password)
 	await web3.eth.accounts.wallet.add(password);
