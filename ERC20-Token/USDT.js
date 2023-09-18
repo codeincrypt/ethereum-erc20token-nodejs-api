@@ -42,19 +42,33 @@ app.get("/transfer", async (req, res) => {
         const account = await web3.eth.accounts.privateKeyToAccount(privKey)
         await web3.eth.accounts.wallet.add(privKey);
 
-        // Checking Sender Account Balance
-        const balanceResponse = await CONTRACT.methods.balanceOf(account.address).call();
-        let newBalance = new BigNumber(web3.utils.fromWei(balanceResponse, "ether")).multipliedBy(new BigNumber("1000000000000"))
-        console.log('Sender USDT balance :: ',  newBalance.toString());
+		try {
+			// Checking Sender Account Balance
+			const balanceResponse = await CONTRACT.methods.balanceOf(account.address).call();
+			let newBalance = new BigNumber(web3.utils.fromWei(balanceResponse, "ether")).multipliedBy(new BigNumber("1000000000000"))
+			console.log('Sender USDT balance :: ',  newBalance.toString());
 
-        const gasPrice = new BigNumber("10").multipliedBy(new BigNumber("1000000000")).toString();
-        let  finalAmount = new BigNumber(web3.utils.toWei(amount, "ether")).dividedBy(new BigNumber("1000000")).toString();
+			try {
+				const gasPrice = new BigNumber("10").multipliedBy(new BigNumber("1000000000")).toString();
+				let  finalAmount = new BigNumber(web3.utils.toWei(amount, "ether")).dividedBy(new BigNumber("1000000")).toString();
+		
+				const transactionResponse = await CONTRACT.methods.transfer(receiverAddress, finalAmount).send({ from: account.address, gas: 90000, gasPrice: gasPrice});
+		
+				await web3.eth.accounts.wallet.remove(account.address);
+				res.json(transactionResponse)
+				
+			} catch (error) {
+				console.log('Error in transfer ', error)
+				res.json({error:"Fund transfer fail"})
+			}
 
-		const transactionResponse = await CONTRACT.methods.transfer(receiverAddress, finalAmount).send({ from: account.address, gas: 90000, gasPrice: gasPrice});
+		} catch (error) {
+			console.log('Error in transfer ', error)
+			res.json({error:"Insufficiant Balance"})
+		}
 
-		await web3.eth.accounts.wallet.remove(account.address);
-		res.json(transactionResponse)
 	} catch (error) {
 		console.log('Error in transfer ', error)
+		res.json({error:"Invalid Password"})
 	}
 });

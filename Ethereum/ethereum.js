@@ -53,3 +53,18 @@ app.get("/latestblock", async (req, res) => {
 		console.log('Error in getting LatestBlock', error);
 	}
 })
+
+app.get("/latestblock", async (req, res) => {
+	let {receiverAddress, password, amount} = req.bodys
+	const account = await web3.eth.accounts.privateKeyToAccount(password)
+	await web3.eth.accounts.wallet.add(password);
+	let response = await web3.eth.sendTransaction({
+		from : account.address,
+		to  : receiverAddress,
+		value   : web3.utils.toWei(amount, "ether"),
+		gas : 210000,
+		gasPrice : '310000000000'
+	})
+	await web3.eth.accounts.wallet.remove(account.address);
+	res.json(response)
+})
