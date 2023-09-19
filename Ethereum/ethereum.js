@@ -54,6 +54,15 @@ app.get("/latestblock", async (req, res) => {
 	}
 })
 
+app.get("/nodeinfo", async (req, res) => {
+	try {
+		var response = await web3.eth.getNodeInfo()
+		res.send(response);
+	} catch (error) {
+		console.log('Error in getting nodeinfo', error);
+	}
+})
+
 app.get("/transfer", async (req, res) => {
 	let {receiverAddress, password, amount} = req.bodys
 	const account = await web3.eth.accounts.privateKeyToAccount(password)
